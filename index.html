@@ -37,10 +37,8 @@
   <h2>📋 定時報告作成</h2>
 
   <div class="card">
-    <div class="row">
-      <div><label>店舗名</label><input id="storeName" value="出汁小林" /></div>
-      <div><label>日付</label><input id="date" type="date" /></div>
-    </div>
+    <label>日付</label>
+    <input id="date" type="date" />
     <label>報告時刻</label>
     <div class="timebtns" id="timeBtns"></div>
     <button onclick="loadLabor()">この時刻までの人件費を計算</button>
@@ -81,7 +79,7 @@
 </div>
 
 <script>
-const API_URL = https://script.google.com/macros/s/AKfycbzes4xfq1UvqL6NF2uRQVGAJ-4IQfgjoXiTDVrWCrCz3Z5dxrtGeh-HNSV4bjtVjmh4mg/exec;
+const API_URL = "ここに定時報告用スクリプトのURLを貼り付け";
 async function apiCall(action, payload) {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -132,6 +130,7 @@ async function loadLabor() {
     body.innerHTML = `<tr><td colspan="4" class="muted" style="text-align:center;">失敗: ${e.message}</td></tr>`;
     return;
   }
+  // adjustはサーバー側で「その日に保存済みの調整値」がすでに反映されて返ってくる(未設定なら0)
   rows = result.rows.map((r) => Object.assign({ adjust: 0 }, r));
   render();
 }
@@ -154,9 +153,16 @@ function render() {
   updateTotal();
 }
 
-function adjust(i, val) {
+async function adjust(i, val) {
+  const date = document.getElementById("date").value || todayStr();
   rows[i].adjust = Number(val) || 0;
   updateTotal();
+  // この日・このスタッフの調整値として保存する(同じ日なら他の報告時刻を選んでも引き継がれる)
+  try {
+    await apiCall("saveAdjustment", { date, staffId: rows[i].staffId, adjustHours: rows[i].adjust });
+  } catch (e) {
+    // 保存に失敗しても画面上の計算は続行する
+  }
 }
 
 function total() {
@@ -175,7 +181,6 @@ function updateRate() {
 }
 
 function makeText() {
-  const store = document.getElementById("storeName").value.trim();
   const sales = Number(document.getElementById("sales").value) || 0;
   const labor = Math.round(total());
   const rate = sales > 0 ? ((labor / sales) * 100).toFixed(1) : "0.0";
@@ -186,7 +191,6 @@ function makeText() {
 
   document.getElementById("out").textContent =
 `${h}時定時報告致します。
-${store}
 
 売上（税抜）：${sales.toLocaleString("ja-JP")}
 人件費：${labor.toLocaleString("ja-JP")}

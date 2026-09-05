@@ -6,76 +6,118 @@
 <title>定時報告作成</title>
 <style>
   * { box-sizing: border-box; }
-  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif; background:#f8fafc; color:#0f172a; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif; background:#faf6ef; color:#3a3226; }
   .wrap { max-width: 560px; margin: 0 auto; padding: 14px; }
-  h2 { font-size:15px; margin: 0 0 12px; }
-  label { display:block; font-size:11px; color:#64748b; margin-bottom:3px; }
-  input, textarea { border:1px solid #cbd5e1; border-radius:8px; padding:8px 9px; font-size:13px; font-family:inherit; width:100%; margin-bottom:8px; }
-  button { background:#0d9488; color:#fff; border:none; border-radius:8px; padding:9px 14px; font-size:13px; font-weight:600; cursor:pointer; }
-  button.secondary { background:#fff; color:#334155; border:1px solid #cbd5e1; }
-  .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:14px; margin-bottom:12px; }
-  .row { display:flex; gap:8px; }
+  label { display:block; font-size:13px; color:#8a7f6c; margin-bottom:5px; }
+  input, textarea { border:1px solid #ded4c2; border-radius:10px; padding:11px 12px; font-size:16px; font-family:inherit; width:100%; margin-bottom:12px; background:#fff; color:#3a3226; }
+  button { background:#2f6f4f; color:#fff; border:none; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:600; cursor:pointer; }
+  button.secondary { background:#fff; color:#3a3226; border:1px solid #ded4c2; }
+  button.outline { background:#c96a3e; }
+  button.dark { background:#2b2b2b; }
+  button:disabled { background:#b9b2a4; cursor:not-allowed; }
+  .card { background:#fff; border:1px solid #ede6d8; border-radius:16px; padding:18px; margin-bottom:14px; }
+  .row { display:flex; gap:10px; }
   .row > div { flex:1; }
-  .timebtns { display:flex; gap:5px; margin-bottom:8px; }
-  .timebtn { flex:1; text-align:center; padding:8px 2px; border-radius:7px; border:1px solid #e2e8f0; background:#fff; color:#64748b; cursor:pointer; font-size:12px; font-weight:600; }
-  .timebtn.active { background:#0f172a; color:#fff; border-color:#0f172a; }
-  table { width:100%; border-collapse:collapse; font-size:12px; }
-  th, td { text-align:right; padding:5px 6px; border-bottom:1px solid #f1f5f9; }
-  th:first-child, td:first-child { text-align:left; }
-  th { color:#94a3b8; font-size:10px; }
-  td input { width:60px; margin:0; padding:4px; text-align:right; }
-  .muted { color:#94a3b8; font-size:11px; }
-  .rate { display:flex; justify-content:space-between; background:#f0fdfa; border-radius:8px; padding:9px; margin:8px 0; font-weight:700; color:#0f766e; font-size:13px; }
-  #out { white-space:pre-wrap; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:13px; line-height:1.7; margin-top:8px; min-height:40px; }
-  .wagerow { display:flex; align-items:center; gap:6px; }
-  .wagerow input { margin:0; }
-  .wagerow button { width:auto; padding:8px 10px; }
+  .timebtns { display:flex; gap:5px; flex-wrap:wrap; }
+  .timebtn { flex:1; min-width:56px; text-align:center; padding:12px 2px; border-radius:10px; border:1px solid #ded4c2; background:#fff; color:#8a7f6c; cursor:pointer; font-size:13px; font-weight:700; }
+  .timebtn.active { background:#2f6f4f; color:#fff; border-color:#2f6f4f; }
+  .hint { color:#a89e8c; font-size:12.5px; line-height:1.6; margin-bottom:14px; }
+  .adjrow { display:flex; gap:6px; align-items:center; margin-bottom:8px; }
+  .adjrow input.adjlabel { flex:1.4; margin:0; }
+  .adjrow input.adjhours { flex:1; margin:0; text-align:right; }
+  .adjrow .adjcost { font-size:12px; color:#8a7f6c; white-space:nowrap; }
+  .adjrow button { padding:8px 10px; font-size:12px; width:auto; }
+  .addbtn { width:100%; margin-bottom:10px; }
+  .saverow { display:flex; gap:8px; }
+  .saverow button { flex:1; }
+  #out { white-space:pre-wrap; background:#faf6ef; border:1px solid #ede6d8; border-radius:10px; padding:14px; font-size:14.5px; line-height:1.9; margin-bottom:10px; }
+  .budgetmode { display:flex; gap:8px; margin: 10px 0; }
+  .budgetmode div { flex:1; text-align:center; padding:12px 4px; border-radius:10px; border:1px solid #ded4c2; background:#fff; color:#8a7f6c; cursor:pointer; font-size:13px; font-weight:600; }
+  .budgetmode div.active { background:#2f6f4f; color:#fff; border-color:#2f6f4f; }
+  .statgrid { display:flex; justify-content:space-between; margin:10px 0; }
+  .statgrid .s { }
+  .statgrid .s .l { font-size:12px; color:#8a7f6c; }
+  .statgrid .s .v { font-size:22px; font-weight:700; }
+  h3 { font-size:15px; margin:0 0 10px; display:flex; align-items:center; gap:6px; }
+  .datehead { text-align:center; color:#a89e8c; font-size:13px; margin-bottom:4px; }
+  .datebox { text-align:center; font-size:20px; font-weight:700; padding:12px; background:#f3ede0; border-radius:12px; margin-bottom:16px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h2>📋 定時報告作成</h2>
 
   <div class="card">
-    <label>日付</label>
-    <input id="date" type="date" />
-    <label>報告時刻</label>
+    <div class="datehead">対象日</div>
+    <input id="date" type="date" style="text-align:center; font-size:18px; font-weight:700; margin-bottom:14px;" />
+    <label>報告タイミング</label>
     <div class="timebtns" id="timeBtns"></div>
-    <button onclick="loadLabor()">この時刻までの人件費を計算</button>
   </div>
 
   <div class="card">
-    <table>
-      <thead><tr><th>スタッフ</th><th>時間</th><th>調整(h)</th><th>金額</th></tr></thead>
-      <tbody id="laborBody"></tbody>
-    </table>
-    <div class="row" style="margin-top:6px; justify-content:space-between; font-size:13px; font-weight:700;">
-      <div>合計</div><div id="laborTotal">¥0</div>
-    </div>
-    <div class="wagerow" style="margin-top:8px;">
-      <label style="margin:0; flex-shrink:0;">平均時給</label>
-      <input id="avgWage" type="number" />
-      <button onclick="saveAvgWage()">保存</button>
-    </div>
-  </div>
+    <h3>📝 報告内容の入力</h3>
+    <div class="hint" id="carryHint"></div>
 
-  <div class="card">
     <label>売上(税抜・円)</label>
-    <input id="sales" type="number" oninput="updateRate()" />
-    <div class="rate"><span>人件費率</span><span id="rate">--%</span></div>
+    <input id="sales" type="number" inputmode="numeric" oninput="onInputChange()" />
+
     <div class="row">
-      <div><label>10分以上オーバー(件)</label><input id="over" type="number" value="0" /></div>
-      <div><label>サービス提供(件)</label><input id="service" type="number" value="0" /></div>
+      <div><label>提供15分オーバー(件)</label><input id="over" type="number" value="0" oninput="onInputChange()" /></div>
+      <div><label>サービス提供(ドリンク・件)</label><input id="service" type="number" value="0" oninput="onInputChange()" /></div>
     </div>
-    <label>欠品商品</label>
-    <textarea id="missing" rows="2"></textarea>
+
+    <label>呼び込み(回)</label>
+    <input id="call" type="number" value="0" oninput="onInputChange()" />
+
+    <label>欠品商品(あれば入力)</label>
+    <textarea id="missing" rows="2" oninput="onInputChange()"></textarea>
+
+    <label>シフトと違う時間に入ったスタッフの調整(＋／－・時間のみ入力)</label>
+    <div id="adjList"></div>
+    <button class="secondary addbtn" onclick="addAdjustment()">＋ 調整を追加</button>
+
+    <div class="saverow">
+      <button class="dark" onclick="saveEntry()">💾 この内容を保存</button>
+    </div>
   </div>
 
   <div class="card">
-    <button onclick="makeText()">文章を作成</button>
+    <h3>✅ 生成された報告文</h3>
     <div id="out"></div>
-    <button class="secondary" style="margin-top:8px;" onclick="copyText()">コピー</button>
+    <button id="copyBtn" class="outline" style="width:100%;" onclick="copyText()" disabled>⚠️ 先に保存してください</button>
   </div>
+
+  <div class="card">
+    <h3>🎯 予算</h3>
+    <div class="row">
+      <div><label>平日の予算(円)</label><input id="weekdayBudget" type="number" onchange="saveBudgets()" /></div>
+      <div><label>土日祝の予算(円)</label><input id="weekendBudget" type="number" onchange="saveBudgets()" /></div>
+    </div>
+    <div class="hint" style="margin-bottom:6px;">一度入力すれば、変更するまでそのまま使われ続けます。</div>
+    <label>今日のモード</label>
+    <div class="budgetmode" id="budgetModeBtns"></div>
+    <div class="statgrid">
+      <div class="s"><div class="l">適用中の予算</div><div class="v" id="appliedBudget">¥0</div></div>
+      <div class="s"><div class="l">現在の売上</div><div class="v" id="currentSales">¥0</div></div>
+    </div>
+    <div class="s"><div class="l">達成率</div><div class="v" id="achieveRate">0.0%</div></div>
+  </div>
+
+  <div class="card">
+    <h3>💰 人件費(確定シフトから自動計算)</h3>
+    <div class="statgrid">
+      <div class="s"><div class="l">シフトからの計算分</div><div class="v" id="shiftCost">¥0</div></div>
+      <div class="s"><div class="l">調整分(±)</div><div class="v" id="adjustCost">+¥0</div></div>
+    </div>
+    <div class="statgrid">
+      <div class="s"><div class="l">人件費合計</div><div class="v" id="laborTotalDisplay">¥0</div></div>
+      <div class="s"><div class="l">労働時間</div><div class="v" id="laborHoursDisplay">0.0h</div></div>
+    </div>
+    <div class="hint">「{{時刻}}」の時点までに経過したシフト時間 × 平均時給で自動計算しています。調整はすぐ上の「報告内容の入力」欄で行えます。</div>
+    <label>人件費計算用 平均時給(円)</label>
+    <input id="avgWage" type="number" onchange="saveAvgWage()" />
+    <div class="hint">この報告での人件費はすべて、この平均時給で概算計算します(スタッフごとの実際の時給は使いません)。</div>
+  </div>
+
 </div>
 
 <script>
@@ -94,120 +136,281 @@ function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
+function yen(n) { return "¥" + Math.round(Number(n) || 0).toLocaleString("ja-JP"); }
 
-const TIMES = ["13:00", "15:00", "19:00", "21:00", "23:00"];
-let selectedTime = "15:00";
-let rows = [];
+const TIMINGS = [
+  { key: "13:00", label: "13時" },
+  { key: "15:00", label: "15時" },
+  { key: "19:00", label: "19時" },
+  { key: "21:00", label: "21時" },
+  { key: "close", label: "クローズ" },
+];
+let selectedTiming = "13:00";
+let adjustments = [];
+let shiftLabor = { hours: 0, cost: 0, wage: 1200 };
+let settings = { averageWage: 1200, weekdayBudget: 0, weekendBudget: 0 };
+let budgetMode = "auto"; // auto | weekday | weekend
+let dirty = false; // 保存後に何か変更したら true にして、コピーボタンを再びロックする
 
 function init() {
   document.getElementById("date").value = todayStr();
-  document.getElementById("timeBtns").innerHTML = TIMES.map((t) =>
-    `<div class="timebtn ${t === selectedTime ? "active" : ""}" onclick="pickTime('${t}')">${Number(t.slice(0,2))}時</div>`
-  ).join("");
-  apiCall("getAverageWage").then((r) => { document.getElementById("avgWage").value = r.wage; }).catch(() => {});
+  renderTimeButtons();
+  loadSettings().then(() => {
+    renderBudgetModeButtons();
+    loadForTiming();
+  });
 }
 init();
 
-function pickTime(t) {
-  selectedTime = t;
-  document.querySelectorAll(".timebtn").forEach((el) => el.classList.toggle("active", el.textContent === Number(t.slice(0,2)) + "時"));
+document.getElementById("date").addEventListener("change", loadForTiming);
+
+async function loadSettings() {
+  try {
+    settings = await apiCall("getSettings");
+  } catch (e) {
+    // 読み込みに失敗した場合は初期値のまま
+  }
+  document.getElementById("avgWage").value = settings.averageWage;
+  document.getElementById("weekdayBudget").value = settings.weekdayBudget;
+  document.getElementById("weekendBudget").value = settings.weekendBudget;
+}
+
+function renderTimeButtons() {
+  document.getElementById("timeBtns").innerHTML = TIMINGS.map((t) =>
+    `<div class="timebtn ${t.key === selectedTiming ? "active" : ""}" onclick="pickTiming('${t.key}')">${t.label}</div>`
+  ).join("");
+}
+
+function pickTiming(key) {
+  selectedTiming = key;
+  renderTimeButtons();
+  loadForTiming();
+}
+
+function isWeekend(dateStr) {
+  const wd = new Date(dateStr + "T00:00:00").getDay();
+  return wd === 0 || wd === 6;
+}
+
+function renderBudgetModeButtons() {
+  const date = document.getElementById("date").value || todayStr();
+  const autoLabel = "自動(今日は" + (isWeekend(date) ? "土日祝" : "平日") + ")";
+  document.getElementById("budgetModeBtns").innerHTML = `
+    <div class="${budgetMode === "auto" ? "active" : ""}" onclick="setBudgetMode('auto')">${autoLabel}</div>
+    <div class="${budgetMode === "weekday" ? "active" : ""}" onclick="setBudgetMode('weekday')">平日</div>
+    <div class="${budgetMode === "weekend" ? "active" : ""}" onclick="setBudgetMode('weekend')">土日祝</div>
+  `;
+  updateBudgetStats();
+}
+
+function setBudgetMode(mode) {
+  budgetMode = mode;
+  renderBudgetModeButtons();
+}
+
+function effectiveBudget() {
+  const date = document.getElementById("date").value || todayStr();
+  const useWeekend = budgetMode === "weekend" || (budgetMode === "auto" && isWeekend(date));
+  return useWeekend ? settings.weekendBudget : settings.weekdayBudget;
+}
+
+function updateBudgetStats() {
+  const sales = Number(document.getElementById("sales").value) || 0;
+  const budget = effectiveBudget();
+  document.getElementById("appliedBudget").textContent = yen(budget);
+  document.getElementById("currentSales").textContent = yen(sales);
+  document.getElementById("achieveRate").textContent = budget > 0 ? ((sales / budget) * 100).toFixed(1) + "%" : "0.0%";
+}
+
+async function saveBudgets() {
+  settings.weekdayBudget = Number(document.getElementById("weekdayBudget").value) || 0;
+  settings.weekendBudget = Number(document.getElementById("weekendBudget").value) || 0;
+  await apiCall("setSettings", { weekdayBudget: settings.weekdayBudget, weekendBudget: settings.weekendBudget });
+  updateBudgetStats();
+  generateText();
 }
 
 async function saveAvgWage() {
-  const wage = Number(document.getElementById("avgWage").value) || 0;
-  await apiCall("setAverageWage", { wage });
-  alert("保存しました");
+  settings.averageWage = Number(document.getElementById("avgWage").value) || 0;
+  await apiCall("setSettings", { averageWage: settings.averageWage });
+  await refreshShiftLabor();
 }
 
-async function loadLabor() {
+/* ---- 前の時間帯からの引き継ぎ・読み込み ---- */
+
+async function loadForTiming() {
   const date = document.getElementById("date").value || todayStr();
-  const body = document.getElementById("laborBody");
-  body.innerHTML = `<tr><td colspan="4" class="muted" style="text-align:center;">計算中...</td></tr>`;
-  let result;
+  renderBudgetModeButtons();
+  lockCopy();
+
+  let entry = null;
   try {
-    result = await apiCall("computeLaborCost", { date, cutoff: selectedTime });
-  } catch (e) {
-    body.innerHTML = `<tr><td colspan="4" class="muted" style="text-align:center;">失敗: ${e.message}</td></tr>`;
-    return;
+    entry = await apiCall("getEntry", { date, timing: selectedTiming });
+  } catch (e) { /* 無視 */ }
+
+  const hint = document.getElementById("carryHint");
+  if (entry) {
+    hint.textContent = "この時間帯はすでに保存済みです。内容を確認・修正して、必要なら再度保存してください。";
+    applyEntry(entry);
+  } else {
+    let carry = null;
+    try {
+      carry = await apiCall("getCarryForward", { date, timing: selectedTiming });
+    } catch (e) { /* 無視 */ }
+    if (carry) {
+      const prevLabel = TIMINGS[TIMINGS.findIndex((t) => t.key === selectedTiming) - 1].label;
+      hint.textContent = `前の時間帯(${prevLabel})の内容(調整欄も含む)を引き継いでいます。時間が経過している分、調整欄の時間は必要に応じて書き換えてください。`;
+      applyEntry(carry);
+    } else {
+      hint.textContent = "";
+      applyEntry({ sales: "", overCount: 0, serviceCount: 0, callCount: 0, missingItems: "", adjustments: [] });
+    }
   }
-  // adjustはサーバー側で「その日に保存済みの調整値」がすでに反映されて返ってくる(未設定なら0)
-  rows = result.rows.map((r) => Object.assign({ adjust: 0 }, r));
-  render();
+  await refreshShiftLabor();
+  generateText();
 }
 
-function render() {
-  const body = document.getElementById("laborBody");
-  body.innerHTML = "";
-  rows.forEach((r, i) => {
-    const h = Math.max(0, r.hours + r.adjust);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${r.name}</td>
-      <td>${r.hours.toFixed(1)}h</td>
-      <td><input type="number" step="0.1" value="${r.adjust}" onchange="adjust(${i}, this.value)"></td>
-      <td>¥${Math.round(h * r.wage).toLocaleString("ja-JP")}</td>
-    `;
-    body.appendChild(tr);
-  });
-  if (rows.length === 0) body.innerHTML = `<tr><td colspan="4" class="muted" style="text-align:center;">シフトがありません</td></tr>`;
-  updateTotal();
+function applyEntry(entry) {
+  document.getElementById("sales").value = entry.sales || "";
+  document.getElementById("over").value = entry.overCount || 0;
+  document.getElementById("service").value = entry.serviceCount || 0;
+  document.getElementById("call").value = entry.callCount || 0;
+  document.getElementById("missing").value = entry.missingItems || "";
+  adjustments = (entry.adjustments || []).map((a) => Object.assign({}, a));
+  renderAdjustments();
 }
 
-async function adjust(i, val) {
+function onInputChange() {
+  lockCopy();
+  updateBudgetStats();
+  generateText();
+}
+
+/* ---- 調整(自由記述+時間) ---- */
+
+function renderAdjustments() {
+  const el = document.getElementById("adjList");
+  el.innerHTML = adjustments.map((a, i) => `
+    <div class="adjrow">
+      <input class="adjlabel" placeholder="内容(例:応援スタッフ)" value="${a.label || ""}" onchange="updateAdjLabel(${i}, this.value)">
+      <input class="adjhours" type="number" step="0.5" placeholder="時間" value="${a.hours || 0}" onchange="updateAdjHours(${i}, this.value)">
+      <span class="adjcost">h (${adjCostLabel(a.hours)})</span>
+      <button class="secondary" onclick="removeAdjustment(${i})">削除</button>
+    </div>
+  `).join("");
+}
+
+function adjCostLabel(hours) {
+  const cost = (Number(hours) || 0) * shiftLabor.wage;
+  return (cost >= 0 ? "+" : "-") + yen(Math.abs(cost));
+}
+
+function addAdjustment() {
+  adjustments.push({ label: "", hours: 0 });
+  renderAdjustments();
+  onInputChange();
+}
+function updateAdjLabel(i, val) {
+  adjustments[i].label = val;
+  onInputChange();
+}
+function updateAdjHours(i, val) {
+  adjustments[i].hours = Number(val) || 0;
+  renderAdjustments();
+  onInputChange();
+}
+function removeAdjustment(i) {
+  adjustments.splice(i, 1);
+  renderAdjustments();
+  onInputChange();
+}
+
+function totalAdjustHours() {
+  return adjustments.reduce((s, a) => s + (Number(a.hours) || 0), 0);
+}
+function totalAdjustCost() {
+  return totalAdjustHours() * shiftLabor.wage;
+}
+
+/* ---- 人件費(確定シフトから自動計算) ---- */
+
+async function refreshShiftLabor() {
   const date = document.getElementById("date").value || todayStr();
-  rows[i].adjust = Number(val) || 0;
-  updateTotal();
-  // この日・このスタッフの調整値として保存する(同じ日なら他の報告時刻を選んでも引き継がれる)
   try {
-    await apiCall("saveAdjustment", { date, staffId: rows[i].staffId, adjustHours: rows[i].adjust });
+    shiftLabor = await apiCall("computeShiftLabor", { date, timing: selectedTiming });
   } catch (e) {
-    // 保存に失敗しても画面上の計算は続行する
+    shiftLabor = { hours: 0, cost: 0, wage: settings.averageWage };
   }
+  document.getElementById("shiftCost").textContent = yen(shiftLabor.cost);
+  document.getElementById("adjustCost").textContent = (totalAdjustCost() >= 0 ? "+" : "-") + yen(Math.abs(totalAdjustCost()));
+  document.getElementById("laborTotalDisplay").textContent = yen(shiftLabor.cost + totalAdjustCost());
+  document.getElementById("laborHoursDisplay").textContent = (shiftLabor.hours + totalAdjustHours()).toFixed(1) + "h";
+  renderAdjustments();
 }
 
-function total() {
-  return rows.reduce((s, r) => s + Math.max(0, r.hours + r.adjust) * r.wage, 0);
+/* ---- 保存・報告文生成 ---- */
+
+async function saveEntry() {
+  const date = document.getElementById("date").value || todayStr();
+  const payload = {
+    date, timing: selectedTiming,
+    sales: Number(document.getElementById("sales").value) || 0,
+    overCount: Number(document.getElementById("over").value) || 0,
+    serviceCount: Number(document.getElementById("service").value) || 0,
+    callCount: Number(document.getElementById("call").value) || 0,
+    missingItems: document.getElementById("missing").value,
+    adjustments: adjustments,
+  };
+  await apiCall("saveEntry", payload);
+  dirty = false;
+  unlockCopy();
+  generateText();
 }
 
-function updateTotal() {
-  document.getElementById("laborTotal").textContent = "¥" + Math.round(total()).toLocaleString("ja-JP");
-  updateRate();
+function lockCopy() {
+  dirty = true;
+  const btn = document.getElementById("copyBtn");
+  btn.disabled = true;
+  btn.textContent = "⚠️ 先に保存してください";
+}
+function unlockCopy() {
+  const btn = document.getElementById("copyBtn");
+  btn.disabled = false;
+  btn.textContent = "📋 コピーする";
 }
 
-function updateRate() {
+function generateText() {
   const sales = Number(document.getElementById("sales").value) || 0;
-  const rateEl = document.getElementById("rate");
-  rateEl.textContent = sales > 0 ? ((total() / sales) * 100).toFixed(1) + "%" : "--%";
-}
-
-function makeText() {
-  const sales = Number(document.getElementById("sales").value) || 0;
-  const labor = Math.round(total());
-  const rate = sales > 0 ? ((labor / sales) * 100).toFixed(1) : "0.0";
+  const budget = effectiveBudget();
+  const rate1 = budget > 0 ? ((sales / budget) * 100).toFixed(1) : "0.0";
+  const labor = Math.round(shiftLabor.cost + totalAdjustCost());
+  const hours = (shiftLabor.hours + totalAdjustHours()).toFixed(1);
+  const rate2 = sales > 0 ? ((labor / sales) * 100).toFixed(1) : "0.0";
   const over = document.getElementById("over").value || "0";
   const service = document.getElementById("service").value || "0";
+  const call = document.getElementById("call").value || "0";
   const missing = document.getElementById("missing").value.trim();
-  const h = Number(selectedTime.slice(0, 2));
+  const label = TIMINGS.find((t) => t.key === selectedTiming).label;
 
-  document.getElementById("out").textContent =
-`${h}時定時報告致します。
-
+  let text = `${label}定時報告致します。
 売上（税抜）：${sales.toLocaleString("ja-JP")}
+予算：${budget.toLocaleString("ja-JP")}
+予算達成率：${rate1}%
 人件費：${labor.toLocaleString("ja-JP")}
-人件費率：${rate}%
-
-10分以上オーバー　${over}件
+労働時間：${hours}時間
+人件費率：${rate2}%
+提供15分オーバー　${over}件
 サービス提供　${service}件
-（アイス、ドリンク等）
-欠品商品
-${missing}`;
+（ドリンク）
+呼び込み　${call}回`;
+  if (missing) text += `\n欠品商品\n${missing}`;
+
+  document.getElementById("out").textContent = text;
 }
 
 async function copyText() {
-  const text = document.getElementById("out").textContent;
-  if (!text) { alert("先に「文章を作成」を押してください"); return; }
   try {
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(document.getElementById("out").textContent);
     alert("コピーしました");
   } catch (e) {
     alert("コピーに失敗しました。文章を長押ししてコピーしてください。");
